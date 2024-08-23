@@ -7,7 +7,7 @@ const port = 3000;
 
 // Configura CORS para permitir solicitudes desde localhost:9000
 app.use(cors({
-  origin: 'http://localhost:9000'
+  origin: 'https://impex-zctt.onrender.com'
 }));
 
 // Conexión a MongoDB
