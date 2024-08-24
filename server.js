@@ -1,16 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');  // Importa el paquete cors
+const cors = require('cors');  
 
 const app = express();
 const port = 3000;
 
-// Configura CORS para permitir solicitudes desde localhost:9000
 app.use(cors({
-  origin: 'https://impex-zctt.onrender.com'
+  origin: 'https://spectacular-churros-718b10.netlify.app/#/'
 }));
 
-// Conexión a MongoDB
+
 mongoose.connect('mongodb+srv://root:Elcieloesrojo98@cluster0.dyswr.mongodb.net/data-impex?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -18,7 +17,7 @@ mongoose.connect('mongodb+srv://root:Elcieloesrojo98@cluster0.dyswr.mongodb.net/
 .then(() => console.log('Conectado a MongoDB Atlas'))
 .catch((error) => console.error('Error al conectar a MongoDB Atlas:', error));
 
-// Define el esquema para la colección 'import'
+
 const contenedorSchema = new mongoose.Schema({
   ESTILO: String,
   "ETA PUERTO (SEMANA)": Number,
@@ -28,7 +27,7 @@ const contenedorSchema = new mongoose.Schema({
 
 const Contenedor = mongoose.model('Contenedor', contenedorSchema);
 
-// Ruta para obtener la información mediante la agregación
+
 app.get('/api/eta-semana', async (req, res) => {
   try {
     const estilo = req.query.estilo;
