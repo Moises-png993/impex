@@ -5,10 +5,12 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
-app.use(cors({
-  origin: 'https://spectacular-churros-718b10.netlify.app/#/'
-}));
+const corsOptions = {
+  origin: 'https://spectacular-churros-718b10.netlify.app',
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
 
 mongoose.connect('mongodb+srv://root:Elcieloesrojo98@cluster0.dyswr.mongodb.net/data-impex?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
