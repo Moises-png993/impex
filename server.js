@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 
 const corsOptions = {
-  origin: 'https://spectacular-churros-718b10.netlify.app',
+  origin: 'https://simpex.netlify.app',
   optionsSuccessStatus: 200,
 };
 
