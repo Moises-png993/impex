@@ -416,7 +416,7 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la pantalla */
+  height: 300vh;
   background: linear-gradient(135deg, #a8edea, #fed6e3);
 }
 
