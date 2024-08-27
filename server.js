@@ -27,8 +27,33 @@ const contenedorSchema = new mongoose.Schema({
   CANTIDAD: Number,
 }, { collection: 'import' });
 
+const CodigoSchemaPartida = new mongoose.Schema({
+  codigo: String,
+  atributo: String
+}, { collection: 'partidas' });
+
 const Contenedor = mongoose.model('Contenedor', contenedorSchema);
 
+const partida = mongoose.model('partida', CodigoSchemaPartida);
+
+app.get('/api/partida', async (req, res) => {
+  const { cadena } = req.query;
+
+  if (!cadena) {
+      return res.status(400).send('La cadena es requerida');
+  }
+
+  try {
+      const resultado = await partida.findOne({ atributo: cadena });
+      if (resultado) {
+          res.json({ partida: resultado.codigo });
+      } else {
+          res.status(404).send('No se encontró la partida para la cadena proporcionada');
+      }
+  } catch (err) {
+      res.status(500).send('Error en el servidor');
+  }
+});
 
 app.get('/api/eta-semana', async (req, res) => {
   try {
@@ -100,6 +125,8 @@ app.get('/api/estilo-cantidad', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
