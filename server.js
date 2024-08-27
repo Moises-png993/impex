@@ -1,16 +1,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');  
+const { findMostSimilar } = require('./hamming');
 
 const app = express();
 const port = 3000;
 
 const corsOptions = {
-  origin: 'https://simpex.netlify.app',
+  origin: 'http://localhost:9003',
   optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
+app.use(express.json());  // Añadido para analizar JSON
 
 mongoose.connect('mongodb+srv://root:Elcieloesrojo98@cluster0.dyswr.mongodb.net/data-impex?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
@@ -19,6 +21,55 @@ mongoose.connect('mongodb+srv://root:Elcieloesrojo98@cluster0.dyswr.mongodb.net/
 .then(() => console.log('Conectado a MongoDB Atlas'))
 .catch((error) => console.error('Error al conectar a MongoDB Atlas:', error));
 
+const articuloSchema = new mongoose.Schema({
+  numeroArticulo: Number,
+  proveedor: String,
+  partida: Number,
+  descripcion: String,
+  upper: String,
+  "Forro/plantilla": String,
+  Suela: String,
+  origen: String,
+  "informacion adicional": String
+}, { collection: 'articulos' });
+
+const Articulo = mongoose.model('Articulo', articuloSchema);
+
+// Endpoint POST para recibir los datos
+app.post('/api/articulo', async (req, res) => {
+  try {
+    const {
+      numeroArticulo,
+      proveedor,
+      partida,
+      descripcion,
+      upper,
+      forro,
+      Suela,
+      origen,
+      informacionAdicional
+    } = req.body;
+
+    const nuevoArticulo = new Articulo({
+      numeroArticulo,
+      proveedor,
+      partida,
+      descripcion,
+      upper,
+      forro,
+      Suela,
+      origen,
+      informacionAdicional
+    });
+
+    await nuevoArticulo.save();
+
+    res.status(201).json(nuevoArticulo);
+  } catch (error) {
+    console.error('Error al subir datos:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 const contenedorSchema = new mongoose.Schema({
   ESTILO: String,
@@ -33,25 +84,40 @@ const CodigoSchemaPartida = new mongoose.Schema({
 }, { collection: 'partidas' });
 
 const Contenedor = mongoose.model('Contenedor', contenedorSchema);
-
-const partida = mongoose.model('partida', CodigoSchemaPartida);
+const Partida = mongoose.model('Partida', CodigoSchemaPartida);
 
 app.get('/api/partida', async (req, res) => {
   const { cadena } = req.query;
 
   if (!cadena) {
-      return res.status(400).send('La cadena es requerida');
+    return res.status(400).send('La cadena es requerida');
   }
 
   try {
-      const resultado = await partida.findOne({ atributo: cadena });
-      if (resultado) {
-          res.json({ partida: resultado.codigo });
-      } else {
-          res.status(404).send('No se encontró la partida para la cadena proporcionada');
-      }
+    const resultado = await Partida.findOne({ atributo: cadena });
+    if (resultado) {
+      res.json({ partida: resultado.codigo });
+    } else {
+      let partidaSugerida = findMostSimilar(cadena);
+      const resultado2 = await Partida.findOne({ atributo: partidaSugerida });
+      console.log(partidaSugerida);
+      res.json({ partida: resultado2.codigo });
+    }
   } catch (err) {
-      res.status(500).send('Error en el servidor');
+    res.status(500).send('Error en el servidor');
+  }
+});
+
+app.get('/api/articulos', async (req, res) => {
+  try {
+    // Utiliza el modelo Articulo para obtener todos los documentos de la colección
+    const articulos = await Articulo.find();
+
+    // Envía los artículos como respuesta en formato JSON
+    res.status(200).json(articulos);
+  } catch (error) {
+    console.error('Error al obtener los artículos:', error);
+    res.status(500).json({ error: 'Error al obtener los artículos' });
   }
 });
 
@@ -125,8 +191,6 @@ app.get('/api/estilo-cantidad', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
