@@ -10,13 +10,7 @@
           id="name"
           class="custom-input"
           placeholder="Ingrese el nombre del Proveedor"
-        />
-        <label for="name">Numero de articulo</label>
-        <input
-          type="number"
-          id="name"
-          class="custom-input"
-          placeholder="Ingresa Numero de articulo"
+          model="Proveedor"
         />
         <label for="name">Descripcion</label>
         <input
@@ -24,6 +18,7 @@
           id="name"
           class="custom-input"
           placeholder="Ingrese Descripcion del Producto"
+          model="comentario"
         />
         <h6>Construccion</h6>
         <div class="row">
@@ -101,28 +96,50 @@
         <div class="row">
           <div class="col-6">
             <q-field label="Water Proof?" stack-label>
-              <q-radio v-model="answer" val="yes" label="Sí"></q-radio>
-              <q-radio v-model="answer" val="no" label="No"></q-radio>
+              <q-radio v-model="answer" val="S" label="Sí"></q-radio>
+              <q-radio v-model="answer" val="N" label="No"></q-radio>
             </q-field>
             <q-field label="Cover Ankle?" stack-label>
-              <q-radio v-model="answer2" val="yes" label="Sí"></q-radio>
-              <q-radio v-model="answer2" val="no" label="No"></q-radio>
+              <q-radio v-model="answer2" val="S" label="Sí"></q-radio>
+              <q-radio v-model="answer2" val="N" label="No"></q-radio>
             </q-field>
             <q-field label="Wedge?" stack-label>
-              <q-radio v-model="answer3" val="yes" label="Sí"></q-radio>
-              <q-radio v-model="answer3" val="no" label="No"></q-radio>
+              <q-radio v-model="answer3" val="S" label="Sí"></q-radio>
+              <q-radio v-model="answer3" val="N" label="No"></q-radio>
+            </q-field>
+            <q-field label="Upper straps fixed with studs?" stack-label>
+              <q-radio v-model="answer4" val="S" label="Sí"></q-radio>
+              <q-radio v-model="answer4" val="N" label="No"></q-radio>
+            </q-field>
+            <q-field label="Shoe cover?" stack-label>
+              <q-radio v-model="answer10" val="S" label="Sí"></q-radio>
+              <q-radio v-model="answer10" val="N" label="No"></q-radio>
             </q-field>
           </div>
 
           <div class="col-6">
             <q-field label="Metal Toe Cap?" stack-label>
-              <q-radio v-model="answer4" val="yes" label="Sí"></q-radio>
-              <q-radio v-model="answer4" val="no" label="No"></q-radio>
+              <q-radio v-model="answer5" val="S" label="Sí"></q-radio>
+              <q-radio v-model="answer5" val="N" label="No"></q-radio>
             </q-field>
-            <q-field label="Over Ankle?" stack-label>
-              <q-radio v-model="answer5" val="yes" label="Sí"></q-radio>
-              <q-radio v-model="answer5" val="no" label="No"></q-radio>
+            <q-field label="Knee cover?" stack-label>
+              <q-radio v-model="answer6" val="S" label="Sí"></q-radio>
+              <q-radio v-model="answer6" val="N" label="No"></q-radio>
             </q-field>
+            <q-field label="surround the toe and instep?" stack-label>
+              <q-radio v-model="answer9" val="S" label="Sí"></q-radio>
+              <q-radio v-model="answer9" val="N" label="No"></q-radio>
+            </q-field>
+            <q-field label="Sports shoes?" stack-label>
+              <q-radio v-model="answer7" val="S" label="Sí"></q-radio>
+              <q-radio v-model="answer7" val="N" label="No"></q-radio>
+            </q-field>
+            <div v-if="answer7 == 'S'">
+              <q-field label="Snowboarding shoe?" stack-label>
+                <q-radio v-model="answer8" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer8" val="N" label="No"></q-radio>
+              </q-field>
+            </div>
           </div>
         </div>
         <h5>Materiales del Calzado</h5>
@@ -202,11 +219,9 @@
             color="primary"
             class="submit-btn"
             label="Enviar"
-            @click="obtenerCadenas"
+            @click="enviarDatos()"
           />
         </q-form>
-
-        <div class="form-group"></div>
       </div>
     </div>
   </q-page>
@@ -216,12 +231,19 @@
 export default {
   data() {
     return {
+      proveedor: "",
+      comentario: "",
       selectedOption: "",
       answer: "",
       answer2: "",
       answer3: "",
       answer4: "",
       answer5: "",
+      answer6: "",
+      answer7: "",
+      answer8: "N",
+      answer9: "",
+      answer10: "",
       options: [
         "Action Leather",
         "BLENDED YARN",
@@ -335,7 +357,7 @@ export default {
     };
   },
   methods: {
-    obtenerCadenas() {
+    upper(material) {
       const upperCategoryMap = {
         "Action Leather": "L",
         "COSTED LEATHER": "L",
@@ -357,12 +379,109 @@ export default {
         PU: "S",
         PVC: "S",
         Raffia: "T",
-        RUBBER: "R",
+        RUBBER: "O",
         SILK: "T",
         "SYNTHETIC FIBER": "T",
         TPU: "S",
         WOOL: "T",
       };
+      return upperCategoryMap[material] || "UNKNOWN";
+    },
+    lining(material) {
+      const materialCategoryMap = {
+        "BLENDED YARN": "T",
+        BOA: "T",
+        COTTON: "T",
+        EVA: "S",
+        FLEECE: "T",
+        GORTEX: "T",
+        HEMP: "T",
+        JUTE: "T",
+        "LEATHER (Bovine)": "L",
+        "LEATHER (Goat)": "L",
+        "LEATHER (Pigskin)": "L",
+        "LEATHER (Sheep)": "L",
+        "No lining": "No Lining",
+        NYLON: "T",
+        POLYESTER: "T",
+        PU: "S",
+        PVC: "S",
+        Raffia: "T",
+        SILK: "T",
+        "SYNTHETIC FIBER": "T",
+        THINSULATE: "T",
+        TRICO: "T",
+      };
+
+      return materialCategoryMap[material] || "UNKNOWN";
+    },
+    outsole(material) {
+      const materialCategoryMap = {
+        ABS: "S",
+        COTTON: "T",
+        EVA: "S",
+        HEMP: "T",
+        IRON: "METAL",
+        JUTE: "T",
+        "LEATHER (Bovine)": "L",
+        "LEATHER (Goat)": "L",
+        "LEATHER (Pigskin)": "L",
+        "LEATHER (Sheep)": "L",
+        PCU: "S",
+        PLASTIC: "S",
+        PU: "S",
+        PVC: "S",
+        PVR: "S",
+        RUBBER: "RUBBER",
+        SPU: "S",
+        "SYNTHETIC FIBER": "T",
+        TEXTILE: "T",
+        TPR: "S",
+        TPU: "S",
+        TVR: "S",
+      };
+
+      return materialCategoryMap[material] || "UNKNOWN";
+    },
+    sockLinning(material) {
+      const materialCategoryMap = {
+        FOAM: "S",
+        GORTEX: "T",
+        JUTE: "T",
+        "LAMINATED PVC": "S",
+        LATEX: "S",
+        "LEATHER (Bovine)": "L",
+        "LEATHER (Goat)": "L",
+        "LEATHER (Pigskin)": "L",
+        "LEATHER (Sheep)": "L",
+        PCU: "S",
+        POLYPROPYLENE: "S",
+        PU: "S",
+        PVC: "S",
+        RUBBER: "RUBBER",
+        STRAW: "T",
+        TEXTILE: "T",
+        THINSULATE: "T",
+        TRICO: "T",
+        WOOD: "OTHER",
+        WOOL: "T",
+      };
+
+      return materialCategoryMap[material] || "UNKNOWN";
+    },
+    insole(material) {
+      const materialCategoryMap = {
+        BOARD: "OTHER",
+        NONE: "OTHER",
+        "Non-woven or woven artificial textile": "OTHER",
+        "Non-woven or woven natural textile": "OTHER",
+        POLYPROPYLENE: "SYNTHETIC",
+        "Synthetic & woven or non-woven textile": "OTHER",
+        Textiles: "Elastodiene",
+      };
+      return materialCategoryMap[material] || "UNKNOWN";
+    },
+    obtenerCadenas() {
       let string = "";
       if (
         this.selectedOption == "option1" ||
@@ -373,8 +492,54 @@ export default {
       } else {
         string += "N";
       }
-      let upper = upperCategoryMap[this.model1];
-      console.log(upper);
+      string += this.answer;
+      string += this.answer2;
+      string += this.answer3;
+      string += this.answer4;
+      string += this.answer5;
+      string += this.answer6;
+      string += this.answer7;
+      string += this.answer8;
+      string += this.answer9;
+      string += this.answer10;
+      string += this.upper(this.model1);
+      string += this.outsole(this.model3);
+      return string;
+    },
+    async getPartida() {
+      let string = this.obtenerCadenas();
+      try {
+        const response = await this.$axios.get("/api/partida", {
+          params: {
+            cadena: string,
+          },
+        });
+        let data = response.data;
+        console.log(data);
+        return data;
+      } catch (error) {
+        console.error("Error fetching data:");
+      }
+    },
+    async enviarDatos() {
+      try {
+        let partida = this.getPartida();
+        let postData = {
+          numeroArticulo: 12,
+          proveedor: this.proveedor,
+          partida: 12,
+          descripcion: this.comentario,
+          upper: this.model1,
+          forro: this.model5,
+          suela: this.model3,
+          origen: "GT", //tambien esto
+          informacionAdiccional: "Es grande", //Mejorar esto
+        };
+        const response = await this.$axios.post("/api/articulo", postData);
+        console.log("Datos enviados con éxito:", response.data);
+      } catch (error) {
+        console.error("Error al enviar datos:", error);
+      }
     },
   },
 };
