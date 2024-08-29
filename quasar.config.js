@@ -74,6 +74,10 @@ module.exports = configure(function (/* ctx */) {
           { server: false },
         ],
       ],
+
+      htmlVariables: {
+        title: "Suppliers Form",
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
@@ -97,7 +101,11 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ["Notify"],
+
+      meta: {
+        title: "Suppliers Form",
+      },
     },
 
     // animations: 'all', // --- includes all animations

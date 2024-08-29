@@ -1,32 +1,48 @@
 <template>
   <q-page
     class="flex flex-center bg-container"
-    :style="{ height: isSubmitted ? '100vh' : '325vh' }"
+    :style="{ height: isSubmitted ? '100vh' : '360vh' }"
   >
     <div class="" v-if="!isSubmitted">
       <div class="form-container">
-        <h4>Formulario Proveedores</h4>
-        <h6>Datos Generales:</h6>
+        <h4>Supplier Form</h4>
+        <h6>General Details</h6>
         <div class="form-group">
-          <label for="name">Proveedor</label>
+          <label for="name">Supplier</label>
           <input
             type="text"
             id="name"
             class="custom-input"
-            placeholder="Ingrese el nombre del Proveedor"
+            placeholder="Enter the Supplier's Name"
             v-model="proveedor"
-            :rules="[validaNoVacio]"
           />
-          <label for="name">Descripcion</label>
+          <label for="name">Description</label>
           <input
             type="text"
             id="name"
             class="custom-input"
-            placeholder="Ingrese Descripcion del Producto"
+            placeholder="Enter Product Description"
             v-model="descripcion"
-            :rules="[validaNoVacio]"
           />
-          <h6>Construccion</h6>
+          <label for="name">Additional Information</label>
+          <input
+            type="text"
+            id="name"
+            class="custom-input"
+            placeholder="Enter Product Information"
+            v-model="informacionAdicional"
+          />
+          <label for="name">Country</label>
+          <q-select
+            v-model="selectedCountry"
+            :options="countries"
+            option-label="name"
+            class="custom-select"
+            option-value="alpha3Code"
+            label="Select a country"
+            filled
+          />
+          <h6>Construction:</h6>
           <div class="row">
             <div class="col-6">
               <q-radio
@@ -98,59 +114,59 @@
               ></q-radio>
             </div>
           </div>
-          <h6>Caracteristicas</h6>
+          <h6>Features:</h6>
           <div class="row">
             <div class="col-6">
               <q-field label="Water Proof?" stack-label>
-                <q-radio v-model="answer" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer" val="S" label="Yes"></q-radio>
                 <q-radio v-model="answer" val="N" label="No"></q-radio>
               </q-field>
               <q-field label="Cover Ankle?" stack-label>
-                <q-radio v-model="answer2" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer2" val="S" label="Yes"></q-radio>
                 <q-radio v-model="answer2" val="N" label="No"></q-radio>
               </q-field>
               <q-field label="Wedge?" stack-label>
-                <q-radio v-model="answer3" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer3" val="S" label="Yes"></q-radio>
                 <q-radio v-model="answer3" val="N" label="No"></q-radio>
               </q-field>
               <q-field label="Upper straps fixed with studs?" stack-label>
-                <q-radio v-model="answer4" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer4" val="S" label="Yes"></q-radio>
                 <q-radio v-model="answer4" val="N" label="No"></q-radio>
               </q-field>
               <q-field label="Shoe cover?" stack-label>
-                <q-radio v-model="answer10" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer10" val="S" label="Yes"></q-radio>
                 <q-radio v-model="answer10" val="N" label="No"></q-radio>
               </q-field>
             </div>
 
             <div class="col-6">
               <q-field label="Metal Toe Cap?" stack-label>
-                <q-radio v-model="answer5" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer5" val="S" label="Yes"></q-radio>
                 <q-radio v-model="answer5" val="N" label="No"></q-radio>
               </q-field>
               <q-field label="Knee cover?" stack-label>
-                <q-radio v-model="answer6" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer6" val="S" label="Yes"></q-radio>
                 <q-radio v-model="answer6" val="N" label="No"></q-radio>
               </q-field>
               <q-field label="surround the toe and instep?" stack-label>
-                <q-radio v-model="answer9" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer9" val="S" label="Yes"></q-radio>
                 <q-radio v-model="answer9" val="N" label="No"></q-radio>
               </q-field>
               <q-field label="Sports shoes?" stack-label>
-                <q-radio v-model="answer7" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer7" val="S" label="Yes"></q-radio>
                 <q-radio v-model="answer7" val="N" label="No"></q-radio>
               </q-field>
               <div v-if="answer7 == 'S'">
                 <q-field label="Snowboarding shoe?" stack-label>
-                  <q-radio v-model="answer8" val="S" label="Sí"></q-radio>
+                  <q-radio v-model="answer8" val="S" label="Yes"></q-radio>
                   <q-radio v-model="answer8" val="N" label="No"></q-radio>
                 </q-field>
               </div>
             </div>
           </div>
-          <h5>Materiales del Calzado</h5>
-          <p>Upper:</p>
-          <div class="row">
+          <h5>Footwear Materials</h5>
+          <p><b>Upper:</b></p>
+          <div class="row q-mb-xl">
             <div class="col-6">
               <q-select v-model="model1" :options="options" label="Material" />
             </div>
@@ -159,12 +175,13 @@
                 type="number"
                 id="name"
                 class="custom-input"
-                placeholder="Porcentaje del Material"
+                placeholder="Percentage"
+                style="width: 60%; margin-left: 60px; margin-right: auto"
               />
             </div>
           </div>
-          <p>Lining:</p>
-          <div class="row">
+          <p><b>Lining:</b></p>
+          <div class="row q-mb-xl">
             <div class="col-6">
               <q-select v-model="model2" :options="options2" label="Material" />
             </div>
@@ -173,12 +190,13 @@
                 type="number"
                 id="name"
                 class="custom-input"
-                placeholder="Porcentaje del Material"
+                placeholder="Percentage"
+                style="width: 60%; margin-left: 60px; margin-right: auto"
               />
             </div>
           </div>
-          <p>Outsole:</p>
-          <div class="row">
+          <p><b>Outsole:</b></p>
+          <div class="row q-mb-xl">
             <div class="col-6">
               <q-select v-model="model3" :options="options3" label="Material" />
             </div>
@@ -187,12 +205,13 @@
                 type="number"
                 id="name"
                 class="custom-input"
-                placeholder="Porcentaje del Material"
+                placeholder="Percentage"
+                style="width: 60%; margin-left: 60px; margin-right: auto"
               />
             </div>
           </div>
-          <p>Sock Lining</p>
-          <div class="row">
+          <p><b>Sock Lining</b></p>
+          <div class="row q-mb-xl">
             <div class="col-6">
               <q-select v-model="model4" :options="options4" label="Material" />
             </div>
@@ -201,11 +220,12 @@
                 type="number"
                 id="name"
                 class="custom-input"
-                placeholder="Porcentaje del Material"
+                placeholder="Percentage"
+                style="width: 60%; margin-left: 60px; margin-right: auto"
               />
             </div>
           </div>
-          <p>Insole</p>
+          <p><b>Insole</b></p>
           <div class="row">
             <div class="col-6">
               <q-select v-model="model5" :options="options5" label="Material" />
@@ -215,7 +235,8 @@
                 type="number"
                 id="name"
                 class="custom-input"
-                placeholder="Porcentaje del Material"
+                placeholder="Percentage"
+                style="width: 60%; margin-left: 60px; margin-right: auto"
               />
             </div>
           </div>
@@ -224,8 +245,8 @@
               type="submit"
               color="primary"
               class="submit-btn"
-              label="Enviar"
-              @click="enviarDatos()"
+              label="SEND"
+              @click="validarEntradas()"
             />
           </q-form>
         </div>
@@ -238,32 +259,32 @@
         size="lg"
         class="animated-check"
       />
-      <div class="success-text">¡Datos guardados correctamente!</div>
+      <div class="success-text">¡Data saved successfully.!</div>
     </div>
   </q-page>
 </template>
 
 <script>
-const validaNoVacio = (val) =>
-  (val && val.trim() !== "") || "Este campo no puede estar vacío";
-
 export default {
   data() {
     return {
+      informacionAdicional: null,
+      selectedCountry: null,
+      countries: [],
       isSubmitted: false,
       proveedor: null,
       descripcion: null,
-      selectedOption: "",
-      answer: "",
-      answer2: "",
-      answer3: "",
-      answer4: "",
-      answer5: "",
-      answer6: "",
-      answer7: "",
+      selectedOption: null,
+      answer: null,
+      answer2: null,
+      answer3: null,
+      answer4: null,
+      answer5: null,
+      answer6: null,
+      answer7: null,
       answer8: "N",
-      answer9: "",
-      answer10: "",
+      answer9: null,
+      answer10: null,
       options: [
         "Action Leather",
         "BLENDED YARN",
@@ -369,12 +390,15 @@ export default {
         "Synthetic & woven or non-woven textile",
         "Textiles",
       ],
-      model1: "",
-      model2: "",
-      model3: "",
-      model4: "",
-      model5: "",
+      model1: null,
+      model2: null,
+      model3: null,
+      model4: null,
+      model5: null,
     };
+  },
+  mounted() {
+    this.fetchCountries();
   },
   methods: {
     upper(material) {
@@ -544,8 +568,6 @@ export default {
       try {
         /*let partidaS = await this.getPartida();
         let partidaN = Number(partidaS.partida);
-        console.log(this.descripcion);
-        console.log(this.proveedor);
         let postData = {
           numeroArticulo: 11000,
           proveedor: this.proveedor,
@@ -553,16 +575,47 @@ export default {
           descripcion: this.descripcion,
           upper: this.model1,
           forro: this.model5,
-          suela: this.model3, // no aparece
-          origen: "GT",
-          informacionAdicional: "Es grande", //no aparece
+          suela: this.model3,
+          origen: this.selectedCountry.alpha3Code,
+          informacionAdicional: this.informacionAdicional,
         };
         console.log(postData);
         const response = await this.$axios.post("/api/articulo", postData);
         console.log("Datos enviados con éxito:", response.data);*/
-        this.isSubmitted = true;
       } catch (error) {
         console.error("Error al enviar datos:", error);
+      }
+    },
+    validarEntradas() {
+      let cadena = this.obtenerCadenas();
+      if (
+        cadena.length === 13 &&
+        this.proveedor != null &&
+        this.descripcion &&
+        this.model1 != null &&
+        this.model5 != null &&
+        this.model3 != null &&
+        this.selectedCountry != null &&
+        this.informacionAdicional != null
+      ) {
+        this.isSubmitted = true;
+      } else {
+        this.$q.notify({
+          type: "negative",
+          message: "Por favor, complete todos los campos.",
+        });
+      }
+    },
+    async fetchCountries() {
+      try {
+        const response = await fetch("https://restcountries.com/v3.1/all");
+        const data = await response.json();
+        this.countries = data.map((country) => ({
+          name: country.name.common,
+          alpha3Code: country.cca3,
+        }));
+      } catch (error) {
+        console.error("Error fetching countries:", error);
       }
     },
   },
@@ -576,7 +629,7 @@ export default {
 label {
   display: block;
   font-size: 16px;
-  color: #333;
+  color: #333; /* Negro para el texto de los labels */
   margin-bottom: 8px;
   font-weight: bold;
 }
@@ -586,57 +639,66 @@ label {
   padding: 10px 15px;
   font-size: 16px;
   border-radius: 5px;
-  border: 1px solid #ccc;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #080808; /* Borde amarillo */
+  box-shadow: inset 0 2px 4px rgba(255, 215, 0, 0.3); /* Sombra amarilla suave */
   transition: border-color 0.3s ease;
 }
 
 .custom-input:focus {
-  border-color: #a8edea;
+  border-color: #0e0d0d; /* Mantén el dorado brillante para el foco */
   outline: none;
-  box-shadow: 0 0 8px rgba(168, 237, 234, 0.5);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5); /* Sombra amarilla */
 }
 
 .custom-input::placeholder {
   color: #aaa;
   font-style: italic;
 }
+
 .bg-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #a8edea, #fed6e3);
-  transition: height 0.5s ease; /* Transición suave */
+  background: linear-gradient(
+    135deg,
+    #ffd700,
+    #ffffff
+  ); /* Gradiente de amarillo a blanco */
+  transition: height 0.5s ease;
 }
+
 .form-container {
-  background-color: #ffffff;
-  padding: 30px;
+  background-color: #ffffff; /* Fondo blanco */
+  padding: 40px;
   border-radius: 10px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 600px;
-  /* Elimina el valor de height para permitir que el contenedor se ajuste al contenido */
+  box-shadow: 0px 10px 30px rgba(255, 215, 0, 0.3); /* Sombra amarilla */
+  width: 100%;
+  max-width: 700px;
 }
+
 .submit-btn {
   width: 100%;
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #ffd700; /* Fondo amarillo */
+  color: #333; /* Texto oscuro para contraste */
+  box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3); /* Sombra amarilla */
   transition: background-color 0.3s ease, transform 0.3s ease;
-  margin-top: 20px; /* Ajusta el valor según tu necesidad */
+  margin-top: 20px;
 }
 
 .submit-btn:hover {
-  background-color: #0056b3; /* Ajusta el color según tu paleta */
+  background-color: #e0c200; /* Amarillo más oscuro en hover */
   transform: translateY(-2px);
 }
 
 .submit-btn:active {
-  background-color: #004494; /* Ajusta el color según tu paleta */
+  background-color: #c0a400; /* Amarillo aún más oscuro en active */
   transform: translateY(0);
 }
+
 .text-center {
   display: flex;
   flex-direction: column;
@@ -676,5 +738,13 @@ label {
   100% {
     opacity: 1;
   }
+}
+
+.custom-select {
+  max-width: 200px;
+  margin-top: 16px;
+  border: 1px solid #1b190f; /* Borde amarillo */
+  background-color: #ffffff; /* Fondo blanco */
+  color: #333; /* Texto oscuro */
 }
 </style>
