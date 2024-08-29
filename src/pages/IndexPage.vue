@@ -10,7 +10,7 @@
           id="name"
           class="custom-input"
           placeholder="Ingrese el nombre del Proveedor"
-          model="Proveedor"
+          v-model="proveedor"
         />
         <label for="name">Descripcion</label>
         <input
@@ -18,7 +18,7 @@
           id="name"
           class="custom-input"
           placeholder="Ingrese Descripcion del Producto"
-          model="comentario"
+          v-model="descripcion"
         />
         <h6>Construccion</h6>
         <div class="row">
@@ -231,8 +231,8 @@
 export default {
   data() {
     return {
-      proveedor: "",
-      comentario: "",
+      proveedor: "prueba",
+      descripcion: "prueba",
       selectedOption: "",
       answer: "",
       answer2: "",
@@ -514,27 +514,33 @@ export default {
             cadena: string,
           },
         });
-        let data = response.data;
-        console.log(data);
-        return data;
+        let datos = response.data;
+        ///let datosNumber = JSON.parse(datos);
+        //console.log(datosNumber.partida);
+        //numeroPartida = datos.partida;
+        return datos;
       } catch (error) {
-        console.error("Error fetching data:");
+        console.error("Error fetching data");
       }
     },
     async enviarDatos() {
       try {
-        let partida = this.getPartida();
+        let partidaS = await this.getPartida();
+        let partidaN = Number(partidaS.partida);
+        console.log(this.descripcion);
+        console.log(this.proveedor);
         let postData = {
-          numeroArticulo: 12,
+          numeroArticulo: 11000,
           proveedor: this.proveedor,
-          partida: 12,
-          descripcion: this.comentario,
+          partida: partidaN,
+          descripcion: this.descripcion,
           upper: this.model1,
           forro: this.model5,
-          suela: this.model3,
-          origen: "GT", //tambien esto
-          informacionAdiccional: "Es grande", //Mejorar esto
+          suela: this.model3, // no aparece
+          origen: "GT",
+          informacionAdicional: "Es grande", //no aparece
         };
+        console.log(postData);
         const response = await this.$axios.post("/api/articulo", postData);
         console.log("Datos enviados con éxito:", response.data);
       } catch (error) {
