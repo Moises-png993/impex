@@ -6,8 +6,20 @@ const { findMostSimilar } = require('./hamming');
 const app = express();
 const port = 3000;
 
+const allowedOrigins = ['http://localhost:9000','http://localhost:9001', 'http://localhost:9002', 'https://mi-dominio.com'];
+
 const corsOptions = {
-  origin: 'http://localhost:9003',
+  origin: function (origin, callback) {
+    // Permite solicitudes sin origen (por ejemplo, desde herramientas como Postman)
+    if (!origin) return callback(null, true);
+
+    // Verifica si el origen está en la lista de permitidos
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origen no permitido por CORS'));
+    }
+  },
   optionsSuccessStatus: 200,
 };
 
@@ -27,10 +39,10 @@ const articuloSchema = new mongoose.Schema({
   partida: Number,
   descripcion: String,
   upper: String,
-  "Forro/plantilla": String,
-  Suela: String,
+  forro: String,
+  suela: String,
   origen: String,
-  "informacion adicional": String
+  informacionAdicional: String
 }, { collection: 'articulos' });
 
 const Articulo = mongoose.model('Articulo', articuloSchema);
@@ -45,7 +57,7 @@ app.post('/api/articulo', async (req, res) => {
       descripcion,
       upper,
       forro,
-      Suela,
+      suela,
       origen,
       informacionAdicional
     } = req.body;
@@ -57,7 +69,7 @@ app.post('/api/articulo', async (req, res) => {
       descripcion,
       upper,
       forro,
-      Suela,
+      suela,
       origen,
       informacionAdicional
     });
