@@ -4,18 +4,14 @@
       <div class="text-h5 text-center q-mb-md">
         {{ saludo }} <q-icon :name="emoji" size="30px" />
       </div>
-      <q-table
-        :rows="articulos"
-        :columns="columns"
-        row-key="id"
-        flat
-        bordered
-        rows-per-page-options="[5, 10, 20]"
-      >
+      <q-table :rows="articulos" :columns="columns" row-key="_id">
         <template v-slot:body-cell-upper="props">
           <q-td :props="props">{{ props.row.upper }}</q-td>
         </template>
-        <!-- Más templates personalizados según sea necesario -->
+        <template v-slot:body-cell-forro="props">
+          <q-td :props="props">{{ props.row.forro }}</q-td>
+        </template>
+        <!-- Agrega más templates personalizados para otras columnas si es necesario -->
       </q-table>
     </q-card>
   </q-page>
@@ -28,7 +24,12 @@ export default {
       saludo: "",
       emoji: "",
       columns: [
-        { name: "id", align: "left", label: "N° Artículo", field: "id" },
+        {
+          name: "numeroArticulo",
+          align: "left",
+          label: "N° Artículo",
+          field: "numeroArticulo",
+        },
         {
           name: "proveedor",
           align: "left",
@@ -49,34 +50,20 @@ export default {
         },
         { name: "upper", align: "left", label: "Upper", field: "upper" },
         {
-          name: "forroPlantilla",
+          name: "forro",
           align: "left",
           label: "Forro/Plantilla",
-          field: "forroPlantilla",
+          field: "forro",
         },
-        { name: "suela", align: "left", label: "Suela", field: "suela" },
         { name: "origen", align: "left", label: "Origen", field: "origen" },
         {
-          name: "infoAdicional",
+          name: "informacionAdicional",
           align: "left",
           label: "Información adicional",
-          field: "infoAdicional",
+          field: "informacionAdicional",
         },
       ],
-      articulos: [
-        {
-          id: "001",
-          proveedor: "Proveedor A",
-          partida: "12345678",
-          descripcion: "Descripción del artículo",
-          upper: "Material Upper",
-          forroPlantilla: "Material Forro/Plantilla",
-          suela: "Material Suela",
-          origen: "País de Origen",
-          infoAdicional: "Información adicional sobre el artículo",
-        },
-        // Más artículos según sea necesario
-      ],
+      articulos: [],
     };
   },
   methods: {
@@ -93,9 +80,19 @@ export default {
         this.emoji = "nightlight_round";
       }
     },
+    async obtenerArticulos() {
+      try {
+        const response = await this.$axios.get("/api/articulos");
+        console.log("Datos recibidos:", response.data);
+        this.articulos = response.data;
+      } catch (error) {
+        console.error("Error al obtener los artículos:", error);
+      }
+    },
   },
   mounted() {
     this.obtenerSaludo();
+    this.obtenerArticulos();
   },
 };
 </script>
