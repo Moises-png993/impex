@@ -1,238 +1,258 @@
 <template>
-  <q-page class="flex flex-center bg-container">
-    <div class="form-container">
-      <h4>Formulario Proveedores</h4>
-      <h6>Datos Generales:</h6>
-      <div class="form-group">
-        <label for="name">Proveedor</label>
-        <input
-          type="text"
-          id="name"
-          class="custom-input"
-          placeholder="Ingrese el nombre del Proveedor"
-          v-model="proveedor"
-        />
-        <label for="name">Descripcion</label>
-        <input
-          type="text"
-          id="name"
-          class="custom-input"
-          placeholder="Ingrese Descripcion del Producto"
-          v-model="descripcion"
-        />
-        <h6>Construccion</h6>
-        <div class="row">
-          <div class="col-6">
-            <q-radio
-              v-model="selectedOption"
-              val="opcion1"
-              label="Adhesive only (cement)"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option2"
-              label="Adhesive with stitching, nails, staples, etc"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option3"
-              label="Cement"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option4"
-              label="Espadrille"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option5"
-              label="Glued and stitched"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option6"
-              label="Goodyear welt"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option13"
-              label="Injected"
-            ></q-radio>
-          </div>
-          <div class="col-6">
-            <q-radio
-              v-model="selectedOption"
-              val="option7"
-              label="Mock welt (welt)"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option8"
-              label="One piece molded (injection molded)"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option9"
-              label="Stitch & Turn"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option10"
-              label="Stitched"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option11"
-              label="Vulcanized"
-            ></q-radio>
-            <q-radio
-              v-model="selectedOption"
-              val="option12"
-              label="Welts"
-            ></q-radio>
-          </div>
-        </div>
-        <h6>Caracteristicas</h6>
-        <div class="row">
-          <div class="col-6">
-            <q-field label="Water Proof?" stack-label>
-              <q-radio v-model="answer" val="S" label="Sí"></q-radio>
-              <q-radio v-model="answer" val="N" label="No"></q-radio>
-            </q-field>
-            <q-field label="Cover Ankle?" stack-label>
-              <q-radio v-model="answer2" val="S" label="Sí"></q-radio>
-              <q-radio v-model="answer2" val="N" label="No"></q-radio>
-            </q-field>
-            <q-field label="Wedge?" stack-label>
-              <q-radio v-model="answer3" val="S" label="Sí"></q-radio>
-              <q-radio v-model="answer3" val="N" label="No"></q-radio>
-            </q-field>
-            <q-field label="Upper straps fixed with studs?" stack-label>
-              <q-radio v-model="answer4" val="S" label="Sí"></q-radio>
-              <q-radio v-model="answer4" val="N" label="No"></q-radio>
-            </q-field>
-            <q-field label="Shoe cover?" stack-label>
-              <q-radio v-model="answer10" val="S" label="Sí"></q-radio>
-              <q-radio v-model="answer10" val="N" label="No"></q-radio>
-            </q-field>
-          </div>
-
-          <div class="col-6">
-            <q-field label="Metal Toe Cap?" stack-label>
-              <q-radio v-model="answer5" val="S" label="Sí"></q-radio>
-              <q-radio v-model="answer5" val="N" label="No"></q-radio>
-            </q-field>
-            <q-field label="Knee cover?" stack-label>
-              <q-radio v-model="answer6" val="S" label="Sí"></q-radio>
-              <q-radio v-model="answer6" val="N" label="No"></q-radio>
-            </q-field>
-            <q-field label="surround the toe and instep?" stack-label>
-              <q-radio v-model="answer9" val="S" label="Sí"></q-radio>
-              <q-radio v-model="answer9" val="N" label="No"></q-radio>
-            </q-field>
-            <q-field label="Sports shoes?" stack-label>
-              <q-radio v-model="answer7" val="S" label="Sí"></q-radio>
-              <q-radio v-model="answer7" val="N" label="No"></q-radio>
-            </q-field>
-            <div v-if="answer7 == 'S'">
-              <q-field label="Snowboarding shoe?" stack-label>
-                <q-radio v-model="answer8" val="S" label="Sí"></q-radio>
-                <q-radio v-model="answer8" val="N" label="No"></q-radio>
-              </q-field>
+  <q-page
+    class="flex flex-center bg-container"
+    :style="{ height: isSubmitted ? '100vh' : '325vh' }"
+  >
+    <div class="" v-if="!isSubmitted">
+      <div class="form-container">
+        <h4>Formulario Proveedores</h4>
+        <h6>Datos Generales:</h6>
+        <div class="form-group">
+          <label for="name">Proveedor</label>
+          <input
+            type="text"
+            id="name"
+            class="custom-input"
+            placeholder="Ingrese el nombre del Proveedor"
+            v-model="proveedor"
+            :rules="[validaNoVacio]"
+          />
+          <label for="name">Descripcion</label>
+          <input
+            type="text"
+            id="name"
+            class="custom-input"
+            placeholder="Ingrese Descripcion del Producto"
+            v-model="descripcion"
+            :rules="[validaNoVacio]"
+          />
+          <h6>Construccion</h6>
+          <div class="row">
+            <div class="col-6">
+              <q-radio
+                v-model="selectedOption"
+                val="opcion1"
+                label="Adhesive only (cement)"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option2"
+                label="Adhesive with stitching, nails, staples, etc"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option3"
+                label="Cement"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option4"
+                label="Espadrille"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option5"
+                label="Glued and stitched"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option6"
+                label="Goodyear welt"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option13"
+                label="Injected"
+              ></q-radio>
+            </div>
+            <div class="col-6">
+              <q-radio
+                v-model="selectedOption"
+                val="option7"
+                label="Mock welt (welt)"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option8"
+                label="One piece molded (injection molded)"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option9"
+                label="Stitch & Turn"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option10"
+                label="Stitched"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option11"
+                label="Vulcanized"
+              ></q-radio>
+              <q-radio
+                v-model="selectedOption"
+                val="option12"
+                label="Welts"
+              ></q-radio>
             </div>
           </div>
-        </div>
-        <h5>Materiales del Calzado</h5>
-        <p>Upper:</p>
-        <div class="row">
-          <div class="col-6">
-            <q-select v-model="model1" :options="options" label="Material" />
+          <h6>Caracteristicas</h6>
+          <div class="row">
+            <div class="col-6">
+              <q-field label="Water Proof?" stack-label>
+                <q-radio v-model="answer" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer" val="N" label="No"></q-radio>
+              </q-field>
+              <q-field label="Cover Ankle?" stack-label>
+                <q-radio v-model="answer2" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer2" val="N" label="No"></q-radio>
+              </q-field>
+              <q-field label="Wedge?" stack-label>
+                <q-radio v-model="answer3" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer3" val="N" label="No"></q-radio>
+              </q-field>
+              <q-field label="Upper straps fixed with studs?" stack-label>
+                <q-radio v-model="answer4" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer4" val="N" label="No"></q-radio>
+              </q-field>
+              <q-field label="Shoe cover?" stack-label>
+                <q-radio v-model="answer10" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer10" val="N" label="No"></q-radio>
+              </q-field>
+            </div>
+
+            <div class="col-6">
+              <q-field label="Metal Toe Cap?" stack-label>
+                <q-radio v-model="answer5" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer5" val="N" label="No"></q-radio>
+              </q-field>
+              <q-field label="Knee cover?" stack-label>
+                <q-radio v-model="answer6" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer6" val="N" label="No"></q-radio>
+              </q-field>
+              <q-field label="surround the toe and instep?" stack-label>
+                <q-radio v-model="answer9" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer9" val="N" label="No"></q-radio>
+              </q-field>
+              <q-field label="Sports shoes?" stack-label>
+                <q-radio v-model="answer7" val="S" label="Sí"></q-radio>
+                <q-radio v-model="answer7" val="N" label="No"></q-radio>
+              </q-field>
+              <div v-if="answer7 == 'S'">
+                <q-field label="Snowboarding shoe?" stack-label>
+                  <q-radio v-model="answer8" val="S" label="Sí"></q-radio>
+                  <q-radio v-model="answer8" val="N" label="No"></q-radio>
+                </q-field>
+              </div>
+            </div>
           </div>
-          <div class="col-6">
-            <input
-              type="number"
-              id="name"
-              class="custom-input"
-              placeholder="Porcentaje del Material"
+          <h5>Materiales del Calzado</h5>
+          <p>Upper:</p>
+          <div class="row">
+            <div class="col-6">
+              <q-select v-model="model1" :options="options" label="Material" />
+            </div>
+            <div class="col-6">
+              <input
+                type="number"
+                id="name"
+                class="custom-input"
+                placeholder="Porcentaje del Material"
+              />
+            </div>
+          </div>
+          <p>Lining:</p>
+          <div class="row">
+            <div class="col-6">
+              <q-select v-model="model2" :options="options2" label="Material" />
+            </div>
+            <div class="col-6">
+              <input
+                type="number"
+                id="name"
+                class="custom-input"
+                placeholder="Porcentaje del Material"
+              />
+            </div>
+          </div>
+          <p>Outsole:</p>
+          <div class="row">
+            <div class="col-6">
+              <q-select v-model="model3" :options="options3" label="Material" />
+            </div>
+            <div class="col-6">
+              <input
+                type="number"
+                id="name"
+                class="custom-input"
+                placeholder="Porcentaje del Material"
+              />
+            </div>
+          </div>
+          <p>Sock Lining</p>
+          <div class="row">
+            <div class="col-6">
+              <q-select v-model="model4" :options="options4" label="Material" />
+            </div>
+            <div class="col-6">
+              <input
+                type="number"
+                id="name"
+                class="custom-input"
+                placeholder="Porcentaje del Material"
+              />
+            </div>
+          </div>
+          <p>Insole</p>
+          <div class="row">
+            <div class="col-6">
+              <q-select v-model="model5" :options="options5" label="Material" />
+            </div>
+            <div class="col-6">
+              <input
+                type="number"
+                id="name"
+                class="custom-input"
+                placeholder="Porcentaje del Material"
+              />
+            </div>
+          </div>
+          <q-form>
+            <q-btn
+              type="submit"
+              color="primary"
+              class="submit-btn"
+              label="Enviar"
+              @click="enviarDatos()"
             />
-          </div>
+          </q-form>
         </div>
-        <p>Lining:</p>
-        <div class="row">
-          <div class="col-6">
-            <q-select v-model="model2" :options="options2" label="Material" />
-          </div>
-          <div class="col-6">
-            <input
-              type="number"
-              id="name"
-              class="custom-input"
-              placeholder="Porcentaje del Material"
-            />
-          </div>
-        </div>
-        <p>Outsole:</p>
-        <div class="row">
-          <div class="col-6">
-            <q-select v-model="model3" :options="options3" label="Material" />
-          </div>
-          <div class="col-6">
-            <input
-              type="number"
-              id="name"
-              class="custom-input"
-              placeholder="Porcentaje del Material"
-            />
-          </div>
-        </div>
-        <p>Sock Lining</p>
-        <div class="row">
-          <div class="col-6">
-            <q-select v-model="model4" :options="options4" label="Material" />
-          </div>
-          <div class="col-6">
-            <input
-              type="number"
-              id="name"
-              class="custom-input"
-              placeholder="Porcentaje del Material"
-            />
-          </div>
-        </div>
-        <p>Insole</p>
-        <div class="row">
-          <div class="col-6">
-            <q-select v-model="model5" :options="options5" label="Material" />
-          </div>
-          <div class="col-6">
-            <input
-              type="number"
-              id="name"
-              class="custom-input"
-              placeholder="Porcentaje del Material"
-            />
-          </div>
-        </div>
-        <q-form>
-          <q-btn
-            type="submit"
-            color="primary"
-            class="submit-btn"
-            label="Enviar"
-            @click="enviarDatos()"
-          />
-        </q-form>
       </div>
+    </div>
+    <div v-if="isSubmitted" class="q-mt-md text-center success-message">
+      <q-icon
+        name="check_circle"
+        color="green"
+        size="lg"
+        class="animated-check"
+      />
+      <div class="success-text">¡Datos guardados correctamente!</div>
     </div>
   </q-page>
 </template>
 
 <script>
+const validaNoVacio = (val) =>
+  (val && val.trim() !== "") || "Este campo no puede estar vacío";
+
 export default {
   data() {
     return {
-      proveedor: "prueba",
-      descripcion: "prueba",
+      isSubmitted: false,
+      proveedor: null,
+      descripcion: null,
       selectedOption: "",
       answer: "",
       answer2: "",
@@ -515,9 +535,6 @@ export default {
           },
         });
         let datos = response.data;
-        ///let datosNumber = JSON.parse(datos);
-        //console.log(datosNumber.partida);
-        //numeroPartida = datos.partida;
         return datos;
       } catch (error) {
         console.error("Error fetching data");
@@ -525,7 +542,7 @@ export default {
     },
     async enviarDatos() {
       try {
-        let partidaS = await this.getPartida();
+        /*let partidaS = await this.getPartida();
         let partidaN = Number(partidaS.partida);
         console.log(this.descripcion);
         console.log(this.proveedor);
@@ -542,7 +559,8 @@ export default {
         };
         console.log(postData);
         const response = await this.$axios.post("/api/articulo", postData);
-        console.log("Datos enviados con éxito:", response.data);
+        console.log("Datos enviados con éxito:", response.data);*/
+        this.isSubmitted = true;
       } catch (error) {
         console.error("Error al enviar datos:", error);
       }
@@ -552,7 +570,7 @@ export default {
 </script>
 <style scoped>
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 label {
@@ -587,10 +605,9 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300vh;
   background: linear-gradient(135deg, #a8edea, #fed6e3);
+  transition: height 0.5s ease; /* Transición suave */
 }
-
 .form-container {
   background-color: #ffffff;
   padding: 30px;
@@ -619,5 +636,45 @@ label {
 .submit-btn:active {
   background-color: #004494; /* Ajusta el color según tu paleta */
   transform: translateY(0);
+}
+.text-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.animated-check {
+  animation: pop-in 0.6s ease-out;
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.success-text {
+  animation: fade-in 1s ease-out;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>
