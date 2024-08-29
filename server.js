@@ -6,7 +6,13 @@ const { findMostSimilar } = require('./hamming');
 const app = express();
 const port = 3000;
 
-const allowedOrigins = ['http://localhost:9000','http://localhost:9001', 'http://localhost:9002', 'https://mi-dominio.com'];
+const allowedOrigins = [
+  'http://localhost:9000',
+  'http://localhost:9001', 
+  'http://localhost:9002', 
+  'https://simpex.netlify.app',
+  'https://formulario-proveedores.netlify.app'
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
