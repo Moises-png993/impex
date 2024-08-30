@@ -11,7 +11,8 @@ const allowedOrigins = [
   'http://localhost:9001', 
   'http://localhost:9002', 
   'https://simpex.netlify.app',
-  'https://formulario-proveedores.netlify.app'
+  'https://formulario-proveedores.netlify.app',
+  'https://supply-form.netlify.app'
 ];
 
 const corsOptions = {
