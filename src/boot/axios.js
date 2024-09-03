@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Crear una instancia de axios con la configuración base
 const api = axios.create({
-  baseURL: "http://localhost:3000", // URL base de la API
+  baseURL: "https://impex-zctt.onrender.com", // URL base de la API
   timeout: 10000000, // Tiempo máximo de espera en milisegundos
 });
 
