@@ -53,12 +53,7 @@
 </template>
 
 <script>
-import DataTable from "src/components/ordenCompra.vue"; // Ajusta la ruta según tu estructura de proyecto
-
 export default {
-  components: {
-    DataTable,
-  },
   data() {
     return {
       estilo: "",

@@ -15,7 +15,7 @@
           <q-btn flat color="red" @click="handleClose" class="close-btn">
             <img src="public/filtrar.png" alt="Ícono" class="btn-icon" />
           </q-btn>
-          <h6>MK: 4400051383</h6>
+          <h6>Pedido Asociado: 4400051383</h6>
           <q-btn
             icon="close"
             flat
@@ -37,42 +37,27 @@ export default {
   setup() {
     const tableData = ref([
       {
+        mk: "4400051383",
         articulo: "30056776002",
+        textoBreve: "Zapato de cuero",
         booking: "14-000823AD",
         bl: "SHHT24080051SZN",
         contenedor: "SEGU4889430",
         factura: "X54NL26B",
       },
       {
+        mk: "4400051384",
         articulo: "30056776004",
+        textoBreve: "Botas de lluvia",
         booking: "14-000823AD",
         bl: "SHHT24080051SZN",
         contenedor: "SEGU4889430",
         factura: "X54NL26B",
       },
       {
+        mk: "4400051385",
         articulo: "30056777002",
-        booking: "14-000823AD",
-        bl: "SHHT24080051SZN",
-        contenedor: "SEGU4889430",
-        factura: "X54NL26B",
-      },
-      {
-        articulo: "30056777003",
-        booking: "14-000823AD",
-        bl: "SHHT24080051SZN",
-        contenedor: "SEGU4889430",
-        factura: "X54NL26B",
-      },
-      {
-        articulo: "30056777004",
-        booking: "14-000823AD",
-        bl: "SHHT24080051SZN",
-        contenedor: "SEGU4889430",
-        factura: "X54NL26B",
-      },
-      {
-        articulo: "30056777005",
+        textoBreve: "Sandalias de playa",
         booking: "14-000823AD",
         bl: "SHHT24080051SZN",
         contenedor: "SEGU4889430",
@@ -81,7 +66,14 @@ export default {
     ]);
 
     const columns = [
+      { name: "mk", label: "MK", align: "left", field: "mk" },
       { name: "articulo", label: "Artículo", align: "left", field: "articulo" },
+      {
+        name: "textoBreve",
+        label: "Texto Breve",
+        align: "left",
+        field: "textoBreve",
+      },
       { name: "booking", label: "Booking", align: "left", field: "booking" },
       { name: "bl", label: "BL", align: "left", field: "bl" },
       {
@@ -131,15 +123,21 @@ export default {
 
 <style scoped>
 .q-page {
-  padding: 10px; /* Ajusta el padding general de la página */
+  padding: 20px;
 }
 
 .top-bar {
-  margin-bottom: 5px; /* Reduce el margen inferior de la barra superior */
-  gap: 5px; /* Reduce el espacio entre los elementos dentro de la barra */
+  display: flex;
+  align-items: center;
 }
 
-.q-table {
-  margin-bottom: 10px; /* Ajusta el espacio debajo de la tabla */
+.close-btn {
+  margin-left: 8px;
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
 }
 </style>

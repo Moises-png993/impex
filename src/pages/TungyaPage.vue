@@ -1,5 +1,6 @@
 <template>
   <q-page class="form-page">
+    <!-- Formulario Actual -->
     <div class="row q-col-gutter-md">
       <div class="col-4">
         <h6 class="label">Orden de Compra:</h6>
@@ -19,12 +20,25 @@
         <q-btn color="primary" label="Buscar" class="btn-custom" />
       </div>
     </div>
+
+    <OrdenCompra class="q-ma-none q-pa-none" />
+    <PedidoAsociado class="q-ma-none q-pa-none" />
+    <ContenedorComponente class="q-ma-none q-pa-none" />
   </q-page>
 </template>
 
 <script>
+import OrdenCompra from "src/components/ordenCompra.vue";
+import PedidoAsociado from "src/components/pedidoAsociado.vue";
+import ContenedorComponente from "src/components/contenedorComponente.vue";
+
 export default {
   name: "FormComponent",
+  components: {
+    OrdenCompra,
+    PedidoAsociado,
+    ContenedorComponente,
+  },
   data() {
     return {
       ordenCompra: "",
@@ -58,6 +72,7 @@ export default {
 .q-input__inner {
   border-radius: 4px; /* Bordes redondeados para los inputs */
 }
+
 .btn-custom {
   padding: 12px 24px; /* Aumenta el tamaño del botón con padding */
   font-size: 16px; /* Aumenta el tamaño del texto del botón */
