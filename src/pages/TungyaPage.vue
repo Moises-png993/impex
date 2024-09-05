@@ -21,9 +21,9 @@
       </div>
     </div>
 
-    <OrdenCompra class="table-content q-mt-md" />
-    <PedidoAsociado class="table-content q-mt-md" />
-    <ContenedorComponente class="table-content q-mt-md" />
+    <OrdenCompra class="table-content" />
+    <PedidoAsociado class="table-content" />
+    <ContenedorComponente class="table-content" />
   </q-page>
 </template>
 
@@ -57,7 +57,7 @@ export default {
 }
 
 .input-style {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   --q-color-primary: #027be3;
   --q-input-padding: 12px;
 }
@@ -74,7 +74,7 @@ export default {
 }
 
 .table-content {
-  margin: 20px 0; /* Agrega margen vertical alrededor de las tablas */
-  padding: 20px; /* Agrega padding alrededor del contenido de las tablas */
+  margin: 1px 0; /* Agrega margen vertical alrededor de las tablas */
+  padding: 1px; /* Agrega padding alrededor del contenido de las tablas */
 }
 </style>

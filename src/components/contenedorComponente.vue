@@ -37,10 +37,12 @@
 
 <script>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router"; // Importa useRouter para redirección
 import axios from "axios";
 
 export default {
   setup() {
+    const router = useRouter(); // Instancia de router
     const tableData = ref([
       {
         mk: "4400051383",
@@ -110,7 +112,9 @@ export default {
 
     const handleDetails = (row) => {
       console.log("Más detalle:", row);
-      // Implementa la lógica para mostrar más detalles aquí
+      // Redirigir a la página específica
+      router.push("/cont");
+      // Si la URL completa es necesaria, usa: window.location.href = "http://localhost:9000/#/cont";
     };
 
     const handleClose = () => {
@@ -156,6 +160,7 @@ export default {
   height: 16px;
   margin-right: 4px;
 }
+
 .table-content {
   margin: 1px 0; /* Agrega margen vertical alrededor de las tablas */
   padding: 0; /* Agrega padding alrededor del contenido de las tablas */
