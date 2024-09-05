@@ -7,6 +7,7 @@ const routes = [
       { path: "/s", component: () => import("pages/ConsultaPage.vue") },
       { path: "/c", component: () => import("pages/CumplimientoPage.vue") },
       { path: "/t", component: () => import("pages/TungyaPage.vue") },
+      { path: "/cont", component: () => import("pages/ContenedorPage.vue") },
     ],
   },
 

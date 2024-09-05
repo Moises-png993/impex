@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-ma-none">
+  <q-page>
     <q-table
       :rows="tableData"
       :columns="columns"
@@ -7,13 +7,22 @@
       :loading="loading"
       :pagination="pagination"
       :filter="filter"
-      class="q-mb-xs q-mt-xs"
       no-data-label="No hay datos disponibles"
+      class="table-content"
     >
       <template v-slot:top>
-        <div class="top-bar">
-          <q-input v-model="filter" label="Filtrar" class="q-mb-md" />
-        </div>
+        <q-input v-model="filter" label="Filtrar" />
+        <q-btn flat color="red" @click="handleClose" class="close-btn">
+          <img src="public/filtrar.png" alt="Ícono" class="btn-icon" />
+        </q-btn>
+        <h6>Contenedor: SEGU4889430</h6>
+        <q-btn
+          icon="close"
+          flat
+          color="red"
+          @click="handleClose"
+          class="close-btn"
+        />
       </template>
       <template v-slot:body-cell-action="props">
         <q-td :props="props">
@@ -104,6 +113,10 @@ export default {
       // Implementa la lógica para mostrar más detalles aquí
     };
 
+    const handleClose = () => {
+      console.log("Cerrar tabla");
+    };
+
     onMounted(() => {
       fetchData();
     });
@@ -115,19 +128,37 @@ export default {
       filter,
       loading,
       handleDetails,
+      handleClose,
     };
   },
 };
 </script>
 
-<style>
+<style scoped>
 .q-page {
-  padding-top: 2px;
-  padding-bottom: 2px;
+  padding: 0;
+  background-color: transparent;
 }
 
-.q-table {
-  margin-top: 0;
-  margin-bottom: 0;
+.top-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.close-btn {
+  margin-left: 8px;
+  padding: 6px 12px;
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+.table-content {
+  margin: 1px 0; /* Agrega margen vertical alrededor de las tablas */
+  padding: 0; /* Agrega padding alrededor del contenido de las tablas */
+  border-radius: 8px;
 }
 </style>

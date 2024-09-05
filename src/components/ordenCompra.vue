@@ -8,21 +8,16 @@
       :pagination="pagination"
       :filter="filter"
       no-data-label="No hay datos disponibles"
+      class="table-content"
     >
       <template v-slot:top>
         <div class="top-bar">
-          <q-input v-model="filter" label="Filtrar" class="q-mb-md" />
+          <q-input v-model="filter" label="Filtrar" />
           <q-btn flat color="red" @click="handleClose" class="close-btn">
-            <img src="public/filtrar.png" alt="Ícono" class="btn-icon" />
+            <img src="/filtrar.png" alt="Ícono" class="btn-icon" />
           </q-btn>
           <h6>MK: 4400051383</h6>
-          <q-btn
-            icon="close"
-            flat
-            color="red"
-            @click="handleClose"
-            class="close-btn"
-          />
+          <q-btn icon="close" flat color="red" @click="handleClose" />
         </div>
       </template>
     </q-table>
@@ -31,7 +26,6 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import axios from "axios";
 
 export default {
   setup() {
@@ -100,8 +94,7 @@ export default {
     const fetchData = async () => {
       loading.value = true;
       try {
-        // const response = await axios.get("https://api.example.com/data"); // Reemplaza con tu URL de API
-        // tableData.value = response.data;
+        // Reemplaza esta sección con la lógica para cargar datos si es necesario
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -111,6 +104,7 @@ export default {
 
     const handleClose = () => {
       console.log("Cerrar tabla");
+      // Implementa la lógica para cerrar la tabla si es necesario
     };
 
     onMounted(() => {
@@ -131,15 +125,28 @@ export default {
 
 <style scoped>
 .q-page {
-  padding: 10px; /* Ajusta el padding general de la página */
+  padding: 0; /* Elimina el padding del contenedor de la página si es necesario */
 }
 
 .top-bar {
-  margin-bottom: 5px; /* Reduce el margen inferior de la barra superior */
-  gap: 5px; /* Reduce el espacio entre los elementos dentro de la barra */
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Espacio entre la barra superior y la tabla */
 }
 
-.q-table {
-  margin-bottom: 10px; /* Ajusta el espacio debajo de la tabla */
+.close-btn {
+  margin-left: 8px;
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.table-content {
+  margin: 10px 0; /* Agrega margen vertical alrededor de las tablas */
+  padding: 0; /* Agrega padding alrededor del contenido de las tablas */
+  border-radius: 8px;
 }
 </style>

@@ -8,12 +8,13 @@
       :pagination="pagination"
       :filter="filter"
       no-data-label="No hay datos disponibles"
+      class="table-content"
     >
       <template v-slot:top>
         <div class="top-bar">
           <q-input v-model="filter" label="Filtrar" class="q-mb-md" />
           <q-btn flat color="red" @click="handleClose" class="close-btn">
-            <img src="public/filtrar.png" alt="Ícono" class="btn-icon" />
+            <img src="/filtrar.png" alt="Ícono" class="btn-icon" />
           </q-btn>
           <h6>Pedido Asociado: 4400051383</h6>
           <q-btn
@@ -92,7 +93,8 @@ export default {
     const fetchData = async () => {
       loading.value = true;
       try {
-        // const response = await axios.get("https://api.example.com/data"); // Reemplaza con tu URL de API
+        // Reemplaza con tu URL de API si es necesario
+        // const response = await axios.get("https://api.example.com/data");
         // tableData.value = response.data;
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -129,6 +131,7 @@ export default {
 .top-bar {
   display: flex;
   align-items: center;
+  margin-bottom: 16px; /* Añadido para dar un poco de espacio entre la barra superior y la tabla */
 }
 
 .close-btn {
@@ -139,5 +142,11 @@ export default {
   width: 16px;
   height: 16px;
   margin-right: 4px;
+}
+
+.table-content {
+  margin: 1px 0; /* Agrega margen vertical alrededor de las tablas */
+  padding: 0; /* Agrega padding alrededor del contenido de las tablas */
+  border-radius: 8px;
 }
 </style>
