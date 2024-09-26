@@ -9,6 +9,7 @@ const routes = [
       { path: "/t", component: () => import("pages/TungyaPage.vue") },
       { path: "/cont", component: () => import("pages/ContenedorPage.vue") },
       { path: "/u", component: () => import("pages/UploadPage.vue") },
+      { path: "/menu", component: () => import("pages/MenuPage.vue") },
     ],
   },
 
