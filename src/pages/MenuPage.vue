@@ -9,44 +9,54 @@
     />
 
     <q-dialog v-model="showPopup" persistent>
-      <q-card style="min-width: 350px">
+      <q-card style="width: 700px; max-width: 95vw;">
         <q-card-section class="bg-yellow-9 text-white">
           <div class="text-h6">Nuevo Embarque</div>
         </q-card-section>
 
-        <q-card-section class="q-pt-md">
+        <q-card-section class="q-pt-md q-px-lg">
           <q-form @submit="onSubmit" class="q-gutter-md">
-            <q-input
-              filled
-              v-model="formData.embarque"
-              label="Embarque"
-              hint="Ejemplo: GT24L7-043"
-              :rules="[val => !!val || 'El campo es requerido']"
-            />
+            <div class="row q-col-gutter-md">
+              <div class="col-12 col-sm-6">
+                <q-input
+                  filled
+                  v-model="formData.embarque"
+                  label="Embarque"
+                  hint="Ejemplo: GT24L7-043"
+                  :rules="[val => !!val || 'El campo es requerido']"
+                />
+              </div>
+              <div class="col-12 col-sm-6">
+                <q-input
+                  filled
+                  v-model="formData.expediente"
+                  label="Expediente"
+                  hint="Ejemplo: 10022345"
+                  :rules="[val => !!val || 'El campo es requerido']"
+                />
+              </div>
+            </div>
 
-            <q-input
-              filled
-              v-model="formData.expediente"
-              label="Expediente"
-              hint="Ejemplo: 10022345"
-              :rules="[val => !!val || 'El campo es requerido']"
-            />
-
-            <q-input
-              filled
-              v-model="formData.transporte"
-              label="Transporte"
-              hint="Ejemplo: 991221"
-              :rules="[val => !!val || 'El campo es requerido']"
-            />
-
-            <q-select
-              filled
-              v-model="formData.checkpoint"
-              :options="['L1', 'L7', 'CB']"
-              label="Checkpoint"
-              :rules="[val => !!val || 'El campo es requerido']"
-            />
+            <div class="row q-col-gutter-md">
+              <div class="col-12 col-sm-6">
+                <q-input
+                  filled
+                  v-model="formData.transporte"
+                  label="Transporte"
+                  hint="Ejemplo: 991221"
+                  :rules="[val => !!val || 'El campo es requerido']"
+                />
+              </div>
+              <div class="col-12 col-sm-6">
+                <q-select
+                  filled
+                  v-model="formData.checkpoint"
+                  :options="['L1', 'L7', 'CB']"
+                  label="Checkpoint"
+                  :rules="[val => !!val || 'El campo es requerido']"
+                />
+              </div>
+            </div>
 
             <q-input
               filled
