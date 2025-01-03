@@ -18,7 +18,8 @@ from typing import List
 load_dotenv("variables.env")
 
 # Obtener la clave de cifrado de Fernet desde el archivo .env
-fernet_key = os.getenv("FERNET_KEY").encode()
+fernet_key = b'mj_g-BGvtHopfDK2_h9QrDyKvxptG8Gi5TkRgVyIGY4=' 
+
 cipher = Fernet(fernet_key)
 
 # Colección de usuarios en la base de datos MongoDB

@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
  # Definir clave secreta y algoritmo para JWT
 load_dotenv("variables.env")
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = "Elcieloesrojo98"
 
 SECRET_KEY = SECRET_KEY.encode()
   # Cambia esto por una clave más segura en producción
