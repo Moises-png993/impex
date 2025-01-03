@@ -1,142 +1,68 @@
 <template>
-  <q-page class="bg-yellow-50">
-    <q-btn
-      color="yellow-9"
-      icon="add"
-      label="Nuevo Embarque"
-      class="q-ma-md"
-      @click="showPopup = true"
-    />
+  <q-page class="bg-yellow-50 flex flex-center">
+    <q-card flat class="menu-grid">
+      <div class="text-center q-pb-lg">
+        <div class="text-h4 text-weight-bold text-yellow-9">Bienvenido</div>
+      </div>
 
-    <q-dialog v-model="showPopup" persistent>
-      <q-card style="width: 700px; max-width: 95vw;">
-        <q-card-section class="bg-yellow-9 text-white">
-          <div class="text-h6">Nuevo Embarque</div>
-        </q-card-section>
+      <div class="grid-container">
+        <q-btn flat class="menu-card" @click="goTo('exportaciones')">
+          <q-icon name="flight_takeoff" size="56px" color="yellow-9" />
+          <div class="text-h6 text-yellow-9 q-mt-sm">Exportaciones</div>
+        </q-btn>
 
-        <q-card-section class="q-pt-md q-px-lg">
-          <q-form @submit="onSubmit" class="q-gutter-md">
-            <div class="row q-col-gutter-md">
-              <div class="col-12 col-sm-6">
-                <q-input
-                  filled
-                  v-model="formData.embarque"
-                  label="Embarque"
-                  hint="Ejemplo: GT24L7-043"
-                  :rules="[val => !!val || 'El campo es requerido']"
-                />
-              </div>
-              <div class="col-12 col-sm-6">
-                <q-input
-                  filled
-                  v-model="formData.expediente"
-                  label="Expediente"
-                  hint="Ejemplo: 10022345"
-                  :rules="[val => !!val || 'El campo es requerido']"
-                />
-              </div>
-            </div>
+        <q-btn flat class="menu-card" @click="goTo('trafico-contenedores')">
+          <q-icon name="local_shipping" size="56px" color="yellow-9" />
+          <div class="text-h6 text-yellow-9 q-mt-sm">Tráfico Contenedores</div>
+        </q-btn>
 
-            <div class="row q-col-gutter-md">
-              <div class="col-12 col-sm-6">
-                <q-input
-                  filled
-                  v-model="formData.transporte"
-                  label="Transporte"
-                  hint="Ejemplo: 991221"
-                  :rules="[val => !!val || 'El campo es requerido']"
-                />
-              </div>
-              <div class="col-12 col-sm-6">
-                <q-select
-                  filled
-                  v-model="formData.checkpoint"
-                  :options="['L1', 'L7', 'CB']"
-                  label="Checkpoint"
-                  :rules="[val => !!val || 'El campo es requerido']"
-                />
-              </div>
-            </div>
+        <q-btn flat class="menu-card" @click="goTo('aforo')">
+          <q-icon name="scale" size="56px" color="yellow-9" />
+          <div class="text-h6 text-yellow-9 q-mt-sm">Aforo</div>
+        </q-btn>
 
-            <q-input
-              filled
-              v-model="formData.comentario"
-              type="textarea"
-              label="Comentario"
-            />
-
-            <q-file
-              filled
-              v-model="formData.documentos"
-              label="Documentos"
-              multiple
-              hint="Seleccione uno o más archivos"
-              :rules="[val => val && val.length > 0 || 'Debe subir al menos un documento']"
-            >
-              <template v-slot:prepend>
-                <q-icon name="attach_file" />
-              </template>
-            </q-file>
-
-            <div class="row justify-end q-mt-md">
-              <q-btn label="Cancelar" color="grey-7" v-close-popup class="q-mr-sm" />
-              <q-btn label="Guardar" type="submit" color="yellow-9" />
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+        <q-btn flat class="menu-card" @click="goTo('fast-email')">
+          <q-icon name="email" size="56px" color="yellow-9" />
+          <div class="text-h6 text-yellow-9 q-mt-sm">Fast Email</div>
+        </q-btn>
+      </div>
+    </q-card>
   </q-page>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useQuasar } from 'quasar'
+import { useRouter } from "vue-router";
 
-const $q = useQuasar()
-const showPopup = ref(false)
+const router = useRouter();
 
-const formData = ref({
-  embarque: '',
-  expediente: '',
-  transporte: '',
-  checkpoint: null,
-  comentario: '',
-  documentos: null
-})
-
-const onSubmit = () => {
-  // Aquí puedes manejar el envío del formulario
-  console.log('Datos del formulario:', formData.value)
-  
-  // Mostrar notificación de éxito
-  $q.notify({
-    color: 'positive',
-    message: 'Formulario enviado con éxito',
-    icon: 'check'
-  })
-
-  // Cerrar el popup
-  showPopup.value = false
-
-  // Reiniciar el formulario
-  formData.value = {
-    embarque: '',
-    expediente: '',
-    transporte: '',
-    checkpoint: null,
-    comentario: '',
-    documentos: null
-  }
-}
+const goTo = (route) => {
+  router.push(`/${route}`);
+};
 </script>
 
 <style scoped>
-.bg-yellow-50 {
-  background-color: #FFFDE7;
+.menu-grid {
+  width: 100%;
+  max-width: 600px;
 }
 
-.bg-yellow-9 {
-  background-color: #F57F17;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.menu-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 </style>

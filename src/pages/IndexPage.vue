@@ -13,7 +13,10 @@
             v-model="username"
             label="Usuario"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Por favor ingrese un usuario']"
+            :rules="[
+              (val) =>
+                (val && val.length > 0) || 'Por favor ingrese un usuario',
+            ]"
             color="yellow-9"
             class="input-field"
           >
@@ -28,7 +31,10 @@
             v-model="password"
             label="Contraseña"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Por favor ingrese una contraseña']"
+            :rules="[
+              (val) =>
+                (val && val.length > 0) || 'Por favor ingrese una contraseña',
+            ]"
             color="yellow-9"
             class="input-field"
           >
@@ -38,10 +44,10 @@
           </q-input>
 
           <div>
-            <q-btn 
-              label="Iniciar Sesión" 
-              type="submit" 
-              color="yellow-9" 
+            <q-btn
+              label="Iniciar Sesión"
+              type="submit"
+              color="yellow-9"
               class="full-width q-py-sm"
               :loading="loading"
               unelevated
@@ -70,59 +76,66 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import axios from 'axios'
+import { ref } from "vue";
+import { useRouter } from "vue-router"; // Importa useRouter
+import axios from "axios";
 
-const username = ref('')
-const password = ref('')
-const loading = ref(false)
-const showErrorDialog = ref(false)
-const errorMessage = ref('')
+const username = ref("");
+const password = ref("");
+const loading = ref(false);
+const showErrorDialog = ref(false);
+const errorMessage = ref("");
+
+const router = useRouter(); // Define router
 
 const onSubmit = async () => {
-  loading.value = true
+  loading.value = true;
   try {
-    const response = await axios.post('http://127.0.0.1:3000/login', {
+    const response = await axios.post("http://127.0.0.1:3000/login", {
       username: username.value,
-      password: password.value
-    })
+      password: password.value,
+    });
 
     if (response.data.access_token) {
-      console.log("Login exitoso")
-      const token = response.data.access_token
-      const tokenType = response.data.token_type
-     
-      localStorage.setItem('access_token', token)
-      localStorage.setItem('token_type', tokenType)
-       router.push('/menu')
+      console.log("Login exitoso");
+      const token = response.data.access_token;
+      const tokenType = response.data.token_type;
+      const userId = response.data.user_id;
 
-      // Aquí puedes redirigir al usuario o realizar otras acciones después del login exitoso
+      localStorage.setItem("access_token", token);
+      localStorage.setItem("token_type", tokenType);
+      localStorage.setItem("user_id", userId);
+
+      router.push("/menu");
     } else {
-      throw new Error('Token no recibido')
+      throw new Error("Token no recibido");
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
 
     if (error.response && error.response.status === 401) {
-      errorMessage.value = 'Usuario o contraseña incorrectos'
-      showErrorDialog.value = true
+      errorMessage.value = "Usuario o contraseña incorrectos";
+      showErrorDialog.value = true;
     } else if (error.response) {
-      console.log('Error en la respuesta del servidor', error.response)
-      errorMessage.value = 'Error en el servidor. Por favor, intente más tarde.'
-      showErrorDialog.value = true
+      console.log("Error en la respuesta del servidor", error.response);
+      errorMessage.value =
+        "Error en el servidor. Por favor, intente más tarde.";
+      showErrorDialog.value = true;
     } else if (error.request) {
-      console.log('No hubo respuesta del servidor', error.request)
-      errorMessage.value = 'No se pudo conectar con el servidor. Verifique su conexión.'
-      showErrorDialog.value = true
+      console.log("No hubo respuesta del servidor", error.request);
+      errorMessage.value =
+        "No se pudo conectar con el servidor. Verifique su conexión.";
+      showErrorDialog.value = true;
     } else {
-      console.log('Error en la solicitud', error.message)
-      errorMessage.value = 'Ocurrió un error inesperado. Por favor, intente de nuevo.'
-      showErrorDialog.value = true
+      console.log("Error en la solicitud", error.message);
+      errorMessage.value =
+        "Ocurrió un error inesperado. Por favor, intente de nuevo.";
+      showErrorDialog.value = true;
     }
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 </script>
 
 <style scoped>
@@ -146,7 +159,7 @@ const onSubmit = async () => {
 }
 
 .bg-yellow-50 {
-  background-color: #FFFDE7;
+  background-color: #fffde7;
 }
 
 :deep(.q-field--outlined .q-field__control) {
@@ -154,10 +167,10 @@ const onSubmit = async () => {
 }
 
 :deep(.q-field--outlined .q-field__control:hover:before) {
-  border-color: #F57F17;
+  border-color: #f57f17;
 }
 
 :deep(.q-field--focused .q-field__control:before) {
-  border-color: #F57F17 !important;
+  border-color: #f57f17 !important;
 }
 </style>
