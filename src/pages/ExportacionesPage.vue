@@ -25,7 +25,7 @@
       <q-page>
         <div v-if="selectedOption === 'semanaActual'">
           <h2>Semana Actual</h2>
-          <p>Este es el contenido de la semana actual.</p>
+          <tabla-exportaciones />
         </div>
         <div v-else-if="selectedOption === 'porSemana'">
           <h2>Por Semana</h2>
@@ -67,7 +67,12 @@
 </template>
 
 <script>
+import TablaExportaciones from "src/components/TablaExportaciones.vue";
+
 export default {
+  components: {
+    TablaExportaciones,
+  },
   data() {
     return {
       rightDrawer: false,
