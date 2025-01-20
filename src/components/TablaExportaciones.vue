@@ -1,194 +1,209 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <table>
-      <thead>
-        <tr>
-          <th id="thPais">PAIS</th>
-          <th id="thSemana">Semana</th>
-          <th id="thExpediente">EXPEDIENTE</th>
-          <th id="thTamano">Tamaño</th>
-          <th id="thFechaDespacho">FECHA DESPACHO</th>
-          <th id="thStatus">Status</th>
-          <th id="thTransporte">TRANSPORTE</th>
-          <th id="thComentario">Comentario</th>
-          <th id="thFts">FTS</th>
-          <th id="thSap">SAP</th>
-          <th id="thAgente">AGENTE</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td id="tdPais">
-            <select disabled>
-              <option value="SV" selected>SV</option>
-              <option value="GT">GT</option>
-              <option value="HN">HN</option>
-              <option value="NI">NI</option>
-              <option value="CR">CR</option>
-            </select>
-          </td>
-          <td id="tdSemana" contenteditable="false">1</td>
-          <td id="tdExpediente" contenteditable="false">SV25L7-001</td>
-          <td id="tdTamano">
-            <select disabled>
-              <option value="8T">8T</option>
-              <option value="20'">20'</option>
-              <option value="40'">40'</option>
-              <option value="48'">48'</option>
-              <option value="53'">53'</option>
-            </select>
-          </td>
-          <td id="tdFechaDespacho">
-            <input type="date" value="2025-01-02" disabled />
-          </td>
-          <td id="tdStatus">
-            <select disabled>
-              <option value="Pendiente LE">Pendiente LE</option>
-              <option value="Pendiente Prep">Pendiente Prep</option>
-              <option value="Pendiente Notificación">
-                Pendiente Notificación
-              </option>
-              <option value="Notificado">Notificado</option>
-              <option value="Despachado">Despachado</option>
-            </select>
-          </td>
-          <td id="tdTransporte">
-            <select disabled>
-              <option value="CROWLEY">CROWLEY</option>
-              <option value="ACOAVANZAR">ACOAVANZAR</option>
-              <option value="Transportes Continental">
-                Transportes Continental
-              </option>
-            </select>
-          </td>
-          <td id="tdComentario" contenteditable="false">Todo en orden</td>
-          <td id="tdFts">
-            <select disabled>
-              <option value="Pendiente">Pendiente</option>
-              <option value="Verificar">Verificar</option>
-              <option value="Notificado">Notificado</option>
-            </select>
-          </td>
-          <td id="tdSap" contenteditable="false">Cerrado</td>
-          <td id="tdAgente">
-            <select disabled>
-              <option value="Mauricio">Mauricio</option>
-              <option value="Moises">Moises</option>
-              <option value="Robert">Robert</option>
-            </select>
-          </td>
-        </tr>
-        <!-- Más filas pueden ir aquí -->
-      </tbody>
-    </table>
-  </q-layout>
+  <div class="table-container full-width">
+    <h1 class="page-title">Semana Actual</h1>
+    <q-table
+      :rows="rows"
+      :columns="columns"
+      row-key="id"
+      :pagination="pagination"
+      :loading="loading"
+      flat
+      bordered
+      class="editable-table"
+    >
+      <template v-slot:body="props">
+        <q-tr :props="props" class="row-style">
+          <q-td v-for="col in props.cols" :key="col.name" :props="props">
+            <div v-if="props.row.editable">
+              <!-- Input para edición -->
+              <q-input v-model="props.row[col.name]" dense outlined />
+            </div>
+            <div v-else>
+              <!-- Valor normal -->
+              {{ props.row[col.name] }}
+            </div>
+          </q-td>
+        </q-tr>
+      </template>
+    </q-table>
+
+    <div class="actions-container">
+      <q-btn
+        color="primary"
+        icon="edit"
+        label="Editar Todo"
+        @click="editAllRows"
+      />
+      <q-btn
+        color="positive"
+        icon="save"
+        label="Guardar Todo"
+        @click="saveAllRows"
+      />
+      <q-btn
+        color="negative"
+        icon="cancel"
+        label="Cancelar"
+        @click="cancelAllEdits"
+      />
+    </div>
+  </div>
 </template>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  background-color: #f4f4f4;
-}
-table {
+
+<script>
+import { ref, reactive } from "vue";
+
+export default {
+  setup() {
+    const loading = ref(false);
+
+    const pagination = reactive({
+      sortBy: "semana",
+      descending: false,
+      page: 1,
+      rowsPerPage: 10,
+    });
+
+    const columns = [
+      { name: "pais", label: "País", field: "pais", align: "center" },
+      { name: "semana", label: "Semana", field: "semana", align: "center" },
+      {
+        name: "expediente",
+        label: "Expediente",
+        field: "expediente",
+        align: "center",
+      },
+      { name: "tamano", label: "Tamaño", field: "tamano", align: "center" },
+      {
+        name: "fecha",
+        label: "Fecha de Despacho",
+        field: "fecha",
+        align: "center",
+      },
+      { name: "status", label: "Estado", field: "status", align: "center" },
+      {
+        name: "transporte",
+        label: "Transporte",
+        field: "transporte",
+        align: "center",
+      },
+      {
+        name: "comentario",
+        label: "Comentario",
+        field: "comentario",
+        align: "left",
+      },
+    ];
+
+    const rows = ref([
+      {
+        id: 1,
+        pais: "SV",
+        semana: "1",
+        expediente: "SV25L7-001",
+        tamano: "8T",
+        fecha: "2025-01-02",
+        status: "Pendiente LE",
+        transporte: "CROWLEY",
+        comentario: "Todo en orden",
+        editable: false, // Estado de edición
+      },
+      {
+        id: 2,
+        pais: "GT",
+        semana: "2",
+        expediente: "GT25L7-002",
+        tamano: "20'",
+        fecha: "2025-01-09",
+        status: "Notificado",
+        transporte: "MAERSK",
+        comentario: "Pendiente documentación",
+        editable: false, // Estado de edición
+      },
+      {
+        id: 3,
+        pais: "HN",
+        semana: "3",
+        expediente: "HN25L7-003",
+        tamano: "40'",
+        fecha: "2025-01-16",
+        status: "Despachado",
+        transporte: "MSC",
+        comentario: "Entregado al cliente",
+        editable: false, // Estado de edición
+      },
+    ]);
+
+    const editAllRows = () => {
+      rows.value.forEach((row) => {
+        row.editable = true; // Activa el modo de edición para todas las filas
+      });
+    };
+
+    const saveAllRows = () => {
+      rows.value.forEach((row) => {
+        row.editable = false; // Guarda cambios y desactiva edición
+      });
+    };
+
+    const cancelAllEdits = () => {
+      // Cancela la edición restaurando los valores iniciales
+      rows.value.forEach((row) => {
+        row.editable = false; // Desactiva edición sin guardar
+      });
+    };
+
+    return {
+      loading,
+      pagination,
+      columns,
+      rows,
+      editAllRows,
+      saveAllRows,
+      cancelAllEdits,
+    };
+  },
+};
+</script>
+
+<style lang="scss">
+.table-container {
   width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-th {
-  background-color: #007bff;
-  color: white;
-  font-weight: bold;
-}
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-tr:hover {
-  background-color: #f1f1f1;
-}
-button {
-  margin: 10px 0;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-button:hover {
-  background-color: #0056b3;
-}
-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-td[contenteditable="true"] {
-  font-weight: normal;
-}
-td[contenteditable="false"] {
-  font-weight: bold;
-}
-select,
-input[type="date"] {
-  width: 100%;
-  padding: 5px;
-  font-weight: bold;
-  background-color: white;
-  border: none;
-  outline: none;
-  pointer-events: none; /* Deshabilitar interacciones */
-}
-select:enabled,
-input[type="date"]:enabled {
-  pointer-events: auto;
-  cursor: pointer;
-}
-.filter-container {
-  margin-bottom: 20px;
-}
-.filter-container label {
-  margin-right: 10px;
+  padding: 16px;
 }
 
-/* Estilo del Modal */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-  padding-top: 60px;
-}
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 500px;
-}
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
+.page-title {
+  font-size: 24px;
   font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
 }
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+
+.editable-table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.q-tr {
+  text-align: center;
+}
+
+.cell-content {
+  padding: 8px 16px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.row-style {
+  &:hover {
+    background-color: #f9f9f9;
+  }
+}
+
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
 }
 </style>

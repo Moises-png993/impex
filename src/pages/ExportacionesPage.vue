@@ -24,7 +24,6 @@
     <q-page-container>
       <q-page>
         <div v-if="selectedOption === 'semanaActual'">
-          <h2>Semana Actual</h2>
           <tabla-exportaciones />
         </div>
         <div v-else-if="selectedOption === 'porSemana'">

@@ -91,7 +91,7 @@ const router = useRouter(); // Define router
 const onSubmit = async () => {
   loading.value = true;
   try {
-    const response = await axios.post("http://127.0.0.1:3000/login", {
+    const response = await axios.post("http://192.168.58.106:3000/login", {
       username: username.value,
       password: password.value,
     });
